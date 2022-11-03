@@ -111,7 +111,9 @@ impl Tetromino {
         self.positions.contains(&pos)
     }
 
-    /** filter all positions that are not y add 1 since we are moving down */
+    /**
+     * Mutates the current tetromino by deleting a part of its block if the tetromino has a block at the given y position
+     * add 1 to y pos of the tetromino otherwise we just return the tetromino original position */
     pub fn remove_line(&mut self, y: i32) {
         self.positions = self
             .positions
@@ -119,6 +121,7 @@ impl Tetromino {
             .copied()
             .filter(|pos| pos.1 != y)
             .map(|pos| {
+                // parts of a tetromino need to dissapear if the player filled in a line
                 if pos.1 >= y {
                     pos
                 } else {

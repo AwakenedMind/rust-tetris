@@ -48,6 +48,7 @@ impl Tetris {
         }
     }
 
+    /** loops through the board of tetrominoes given a y position (row) and checks if a new hash set has the same length as the board width (number of max tetromonies that can fit on the board)  */
     pub fn is_line_full(&self, y: i32) -> bool {
         self.board_tetrominoes
             .iter()
@@ -58,12 +59,14 @@ impl Tetris {
             == self.width
     }
 
+    /** deletes an entire row of tetrominoes given a y position (row) from the board */
     fn remove_line(&mut self, y: i32) {
         for t in self.board_tetrominoes.iter_mut() {
             t.remove_line(y)
         }
     }
 
+    /** Will check if a row is full  */
     fn remove_full_lines(&mut self) {
         for y in 0..self.height {
             if self.is_line_full(y) {
