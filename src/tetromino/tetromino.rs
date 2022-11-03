@@ -60,6 +60,11 @@ impl Tetromino {
         self.positions.iter().copied()
     }
 
+    /** compares the current Tetromino pos with another (intersection of hashsets)  */
+    pub fn collides_with(&self, other: &Tetromino) -> bool {
+        self.positions.intersection(&other.positions).count() > 0
+    }
+
     pub fn random_tetromino() -> Self {
         let random = (rand::random::<f64>() * 7.0).floor() as u8;
 

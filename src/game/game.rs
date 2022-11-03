@@ -1,3 +1,5 @@
+use std::mem;
+
 use crate::tetromino::tetromino::{Pos, Tetromino};
 /** Tetris Game Model */
 #[derive(Debug)]
@@ -19,13 +21,25 @@ impl Tetris {
             board_tetrominoes: vec![],
         }
     }
-    /** tick will move the current tetromino dow by add 1 on the y position */
+    /** tick will move the current tetromino down by add 1 on the y position */
     pub fn tick(&mut self) {
-        self.cur_tetromino = &self.cur_tetromino + Pos(0, 1)
+        let translated_tetromino = &self.cur_tetromino + Pos(0, 1);
+
+        if self.is_out_of_bounds(&translated_tetromino) || self.has_collided(&translated_tetromino)
+        {
+            // now we transition the current shape onto the board tetermonioes and generate a new cur tetromino
+            let new_board_tetromino = mem::replace(
+                &mut self.cur_tetromino,
+                &Tetromino::random_tetromino() + Pos(self.width / 2, 0),
+            );
+            self.board_tetrominoes.push(new_board_tetromino);
+        } else {
+            self.cur_tetromino = translated_tetromino;
+        }
     }
 
     /** checks whether the the tetromino is out of bounds on the x pos  */
-    pub fn is_out_of_bounds(&self, t: Tetromino) -> bool {
+    pub fn is_out_of_bounds(&self, t: &Tetromino) -> bool {
         t.positions().all(|pos| 0 <= pos.0 && pos.0 < self.width)
     }
 
