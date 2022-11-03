@@ -1,3 +1,2 @@
-mod Tetris;
-mod Tetromino;
+mod game;
 mod tetromino;
